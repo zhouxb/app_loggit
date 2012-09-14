@@ -1,0 +1,44 @@
+- extends 'loggit/body.haml'
+
+- load url from future
+- load i18n
+- load compress
+
+- block main
+
+  .loading
+  %p.affix
+    %span#total.badge.badge-info 0
+    %span#count.badge.badge-success 0
+
+  #table{'style':'padding-top:50px;'}
+    %table.table.table-striped
+      %tbody
+
+  - compress js
+    %script{'type':'text/coffeescript', 'src':'={ STATIC_URL }cs/newdomain.coffee'}
+
+  - compress js
+    %script{'type':'text/coffeescript'}
+      $ ->
+        last_add_data = () -> $.get '{% url "loggit_api_newdomain_index" %}', {'page':window.page}, (data) ->
+          if data.domains
+            window.page += 1
+
+            $('#total').html window.total = data.total
+            $('#count').html window.count += data.domains.length
+            for domain in data.domains
+                $('.table > tbody:last').append "<tr><td>"+domain+"<\/td><\/tr>"
+          window.loading.hide()
+
+        window.page = 0
+        window.count = 0
+        window.total = 0
+        window.loading = $('.loading').spin()
+        last_add_data(page)
+
+        $(window).scroll () ->
+          if $(window).scrollTop() == $(document).height() - $(window).height() and window.total != window.count
+            window.loading.show()
+            last_add_data(page)
+

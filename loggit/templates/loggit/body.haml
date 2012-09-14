@@ -1,0 +1,9 @@
+- extends 'base.haml'
+
+- block resource
+  %script{'src':'={ STATIC_URL }js/spin.min.js'}
+
+- block sidebar
+  - include 'loggit/sidebar.haml'
+
+- block main
