@@ -1,0 +1,21 @@
+- extends 'loggit/body.haml'
+
+- load url from future
+- load i18n
+- load compress
+
+- block main
+    #my-timeline
+    - compress js
+      %script{'type':'text/coffeescript'}
+        $ ->
+          createStoryJS {
+            'type':'timeline',
+            'width':"100%",
+            'height':"500",
+            'lang':'zh-ch',
+            'source':'{% url "loggit_timeline_show" %}',
+            'start_at_end':true,
+            'embed_id':'my-timeline'
+          }
+

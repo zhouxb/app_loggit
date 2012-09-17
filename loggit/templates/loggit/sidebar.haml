@@ -4,9 +4,15 @@
 .well.sidebar-nav.affix
   %ul.nav.nav-list
     %li.nav-header
-      {% trans 'discovery domain' %}
+      {% trans 'timeline' %}
     %li.active
-      %a{'href':"{% url 'loggit_newdomain' %}"}
+      %a{'href':"{% url 'loggit_timeline_index' %}"}
+        {% trans 'timeline' %}
+
+    %li.nav-header
+      {% trans 'discovery domain' %}
+    %li
+      %a{'href':"{% url 'loggit_newdomain_index' %}"}
         {% trans 'newdomain' %}
     -#%li
       -#%a{'href':"{% url 'tasking_task_index' %}"}
