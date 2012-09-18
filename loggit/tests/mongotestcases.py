@@ -11,11 +11,14 @@ DB = settings.LOGGIT_TEST_DB
 
 class TestCase(TransactionTestCase):
     def _fixture_setup(self):
-        for testdata in self.fixtures:
-            # FIXME
-            collection = testdata.split('_')[1]
-            create_cmd = 'mongoimport --db %s --collection %s --file %s/%s' % (DB, collection, FIXTURES_PATH, testdata)
-            commands.getstatusoutput(create_cmd)
+        try:
+            for testdata in self.fixtures:
+                # FIXME
+                collection = testdata.split('_')[1]
+                create_cmd = 'mongoimport --db %s --collection %s --file %s/%s' % (DB, collection, FIXTURES_PATH, testdata)
+                commands.getstatusoutput(create_cmd)
+        except:
+            pass
 
     def _fixture_teardown(self):
         drop_cmd = "mongo %s --eval 'db.dropDatabase()'" % DB
