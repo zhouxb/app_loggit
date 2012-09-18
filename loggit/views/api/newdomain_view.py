@@ -11,7 +11,7 @@ def index(request):
 
     timeout = settings.LOGGIT_TIMEOUT if day is None else 60
     day = day or datetime.date.today().strftime('%Y%m%d')
-    day = '20120827'
+    #day = '20120827'
 
     if cache.get(day) is None:
         domains = list(Minutely.objects(date__startswith=day).values_list('domain', ))
@@ -37,6 +37,7 @@ def index(request):
 def show(request):
     starttime = request.GET.get('starttime', None)
     endtime = request.GET.get('endtime', None)
+    page = request.GET.get('page', None)
 
     if starttime is None and endtime is None:
         return {'domains':[]}
@@ -51,6 +52,18 @@ def show(request):
             domains = list(Minutely.objects(date__gte=starttime, date__lte=endtime).values_list('domain', ))
         cache.set(k, domains, settings.LOGGIT_TIMEOUT)
     domains = cache.get(k)
+    total = len(domains)
 
-    return {'domains':domains}
+    #FIXME
+    if page is None:
+        return {'domains':domains, 'total':total}
+
+    page = int(page)
+    num = 100
+    if num*page > total:
+        domains = []
+    else:
+        domains = domains[num*page:num*(1+page)]
+
+    return {'domains':domains, 'total':total}
 
