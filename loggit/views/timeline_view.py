@@ -24,13 +24,21 @@ def show(request):
         for day in day_on_num(datetime.date.today(), 30):
             count = Minutely.objects(date__startswith=day).count()
 
+            year = day[:4]
+            month = day[4:6]
+            day = day[6:]
+
+            starttime = '%s-%s-%s' % (year, month, day)
+            endtime = starttime
+            url = '%s?starttime=%s&endtime=%s' % (reverse('loggit_newdomain_show'), starttime, endtime)
+
             date.append({
-                "startDate":"%s,%s,%s" % (day[:4], day[4:6], day[6:]),
+                "startDate":"%s,%s,%s" % (year, month, day),
                 "endDate":"",
                 "headline":'newdomain %s' % str(count),
                 "text":"<p>newdomain</p>",
                 "asset": {
-                    "media":"<h3>%s</h3>" % str(count),
+                    "media":"<a href=%s>%s</a>" % (url, str(count)),
                     "credit":"",
                     "caption":""
                 }
