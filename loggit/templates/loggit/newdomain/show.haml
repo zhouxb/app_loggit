@@ -1,0 +1,36 @@
+- extends 'loggit/newdomain/index.haml'
+
+- load url from future
+- load i18n
+- load compress
+
+- block mcs
+    - compress js
+      %script{'type':'text/coffeescript', 'src':'={ STATIC_URL }cs/newdomain.coffee'}
+
+    - compress js
+      %script{'type':'text/coffeescript'}
+        $ ->
+          $('.starttime').datepicker({format:'yyyy-mm-dd'})
+          $('.endtime').datepicker({format:'yyyy-mm-dd'})
+
+          window.loading = $('.loading').spin()
+          table_e = $('.table > tbody:last')
+          total_e = $('#total')
+          count_e = $('#count')
+
+          starttime = '{{ starttime }}'
+          endtime = '{{ endtime }}'
+          starttime = starttime.replace /-/g, ''
+          endtime = endtime.replace /-/g, ''
+          console.log starttime += '0000'
+          console.log endtime += '2359'
+
+          newdomain = new NewDomain '{% url "loggit_api_newdomain_show" %}', starttime, endtime
+          newdomain.load_data(window.loading, table_e, total_e, count_e)
+
+          $(window).scroll () ->
+            if $(window).scrollTop() == $(document).height() - $(window).height() and window.total != window.count
+              window.loading.show()
+              newdomain.load_data(window.loading, table_e, total_e, count_e)
+

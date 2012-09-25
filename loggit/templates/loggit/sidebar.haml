@@ -1,0 +1,20 @@
+- load url from future
+- load i18n
+
+.well.sidebar-nav.affix
+  %ul.nav.nav-list
+    %li.nav-header
+      {% trans 'timeline' %}
+    %li
+      %a{'href':"{% url 'loggit_timeline_index' %}"}
+        {% trans 'timeline' %}
+
+    %li.nav-header
+      {% trans 'discovery domain' %}
+    %li
+      %a{'href':"{% url 'loggit_newdomain_index' %}"}
+        {% trans 'newdomain' %}
+    -#%li
+      -#%a{'href':"{% url 'tasking_task_index' %}"}
+        -#{% trans 'cname' %}
+

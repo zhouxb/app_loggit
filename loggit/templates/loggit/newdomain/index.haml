@@ -1,0 +1,56 @@
+- extends 'loggit/body.haml'
+
+- load url from future
+- load i18n
+- load compress
+
+- block main
+
+  - block mheader
+    .loading
+    .affix
+      %p
+        %span#total.badge.badge-info 0
+        %span#count.badge.badge-success 0
+
+    %form.form-inline{'style':'padding-top:30px;', 'method':'GET', 'action':"{% url 'loggit_newdomain_show' %}"}
+      %legend {% trans 'today'%}
+        = day
+      %input.input-medium.starttime{'type':'text', 'name':'starttime', 'value':'={starttime}'}
+      To
+      %input.input-medium.endtime{'type':'text', 'name':'endtime', 'value':'={endtime}'}
+      %button.btn{'type':'submit'}
+        %i.icon-search
+        {% trans 'search' %}
+
+    #table
+      %table.table.table-striped
+        %thead
+          %tr
+            %th{'width':10} #
+            %th {% trans 'domain' %}
+        %tbody
+
+  - block mcs
+    - compress js
+      %script{'type':'text/coffeescript', 'src':'={ STATIC_URL }cs/newdomain.coffee'}
+
+    - compress js
+      %script{'type':'text/coffeescript'}
+        $ ->
+          $('.starttime').datepicker({format:'yyyy-mm-dd'})
+          $('.endtime').datepicker({format:'yyyy-mm-dd'})
+
+          window.loading = $('.loading').spin()
+          table_e = $('.table > tbody:last')
+          total_e = $('#total')
+          count_e = $('#count')
+
+          newdomain = new NewDomain '{% url "loggit_api_newdomain_index" %}', '{{ starttime }}', '{{ endtime }}'
+          newdomain.load_data(window.loading, table_e, total_e, count_e)
+
+          $(window).scroll () ->
+            if $(window).scrollTop() == $(document).height() - $(window).height() and window.total != window.count
+              window.loading.show()
+              newdomain.load_data(window.loading, table_e, total_e, count_e)
+

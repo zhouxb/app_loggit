@@ -1,0 +1,17 @@
+- extends 'base.haml'
+
+- load url from future
+- load i18n
+- load compress
+
+- block resource
+  %script{'src':'={ STATIC_URL }js/spin.min.js'}
+  %script{'src':'={ STATIC_URL }datepicker/js/bootstrap-datepicker.js'}
+  %link{'rel':'stylesheet', 'href':'={ STATIC_URL }datepicker/css/datepicker.css'}
+
+  %script{'src':'={ STATIC_URL }timeline/js/storyjs-embed.js'}
+
+- block sidebar
+  - include 'loggit/sidebar.haml'
+
+- block main
