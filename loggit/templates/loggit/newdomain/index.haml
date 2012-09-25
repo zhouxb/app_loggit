@@ -8,18 +8,21 @@
 
   - block mheader
     .loading
-    .affix
+    .here{'style':'bottom:1px; position:fixed; right:10px;'}
       %p
         %span#total.badge.badge-info 0
         %span#count.badge.badge-success 0
 
-    %form.form-inline{'style':'padding-top:30px;', 'method':'GET', 'action':"{% url 'loggit_newdomain_show' %}"}
+    %form.form-inline{'method':'GET', 'action':"{% url 'loggit_newdomain_show' %}"}
       %legend {% trans 'today'%}
         = day
       %input.input-medium.starttime{'type':'text', 'name':'starttime', 'value':'={starttime}'}
       To
       %input.input-medium.endtime{'type':'text', 'name':'endtime', 'value':'={endtime}'}
       %button.btn{'type':'submit'}
+        %i.icon-search
+        {% trans 'search' %}
+      %a.btn{'href':'{% url "loggit_newdomain_analysis_index" %}?day={{ starttime }}'}
         %i.icon-search
         {% trans 'search' %}
 
