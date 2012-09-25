@@ -3,21 +3,40 @@
 - load url from future
 - load i18n
 - load compress
+- load loggit_filter
 
 - block main
   %legend {% trans 'analysis'%}
     = day
+
+  %ul.breadcrumb
+    %li
+      %a{'href':'{% url "loggit_newdomain_analysis_index" %}?day={{ day }}'} Home
+      %span.divider /
+    - if key
+      - for k in key|ksplit
+        %a{'href':'{% url "loggit_newdomain_analysis_index" %}?day={{ day }}&key={{ k }}'}
+          = k
+        %span.divider /
 
   %table.table.table-striped
     %thead
       %tr
         %th{'width':10} #
         %th {% trans 'domain' %}
+        %th {% trans 'operate' %}
     %tbody
       - for domain in domains
         %tr
           %td
             = domain.count
           %td
-            = domain.domain
+            - if domain.count != 1
+              %a{'href':'{% url "loggit_newdomain_analysis_index" %}?day={{ day }}&key={{ domain.domain }}'}
+                = domain.domain
+            - else
+              = domain.domain
+          %td
+              %a{'href':'{% url "loggit_newdomain_filter_create" %}'}
+                %i.icon-edit
 

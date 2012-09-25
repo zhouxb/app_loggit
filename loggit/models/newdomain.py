@@ -1,3 +1,6 @@
+# -*- coding:utf8 -*-
+
+import datetime
 from collections import defaultdict
 from mongoengine import *
 from mongoengine.connection import get_connection, get_db, _dbs
@@ -50,4 +53,13 @@ def group_domain(n):
     def inner(domains):
         return groupby(domains, get_level(n))
     return inner
+
+class Filter(Document):
+    date = DateTimeField(default=datetime.datetime.now)
+    rule = StringField()
+
+    meta = {
+            'db_alias':'newdomain',
+            'allow_inheritance':False,
+    }
 

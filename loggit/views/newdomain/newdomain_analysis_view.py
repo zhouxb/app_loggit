@@ -2,9 +2,10 @@
 
 import datetime
 from django.core.cache import cache
+from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from annoying.decorators import render_to
-from loggit.models.newdomain import Minutely
+from loggit.models.newdomain import Minutely, Filter
 from loggit.conf import settings
 
 @render_to('loggit/newdomain/analysis/index.haml')
@@ -27,4 +28,14 @@ def index(request):
     domains = Minutely.analysis(domains, n, key)
 
     return {'domains':domains, 'total':total, 'day':day, 'key':key}
+
+def create(request):
+    print dir(request)
+
+    #rule = request.POST.get('rule', None)
+    #if rule:
+        #filter = Filter(rule=rule)
+        #filter.save()
+
+    return {}
 
