@@ -1,0 +1,23 @@
+- extends 'loggit/body.haml'
+
+- load url from future
+- load i18n
+- load compress
+
+- block main
+  %legend {% trans 'analysis'%}
+    = day
+
+  %table.table.table-striped
+    %thead
+      %tr
+        %th{'width':10} #
+        %th {% trans 'domain' %}
+    %tbody
+      - for domain in domains
+        %tr
+          %td
+            = domain.count
+          %td
+            = domain.domain
+

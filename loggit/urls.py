@@ -14,3 +14,7 @@ urlpatterns += patterns('loggit.views.newdomain_view',
     url(r'^newdomain/index$', 'index', name='loggit_newdomain_index'),
     url(r'^newdomain/show$', 'show', name='loggit_newdomain_show'),
 )
+
+urlpatterns += patterns('loggit.views.newdomain_analysis_view',
+    url(r'^newdomain/analysis/index$', 'index', name='loggit_newdomain_analysis_index'),
+)
