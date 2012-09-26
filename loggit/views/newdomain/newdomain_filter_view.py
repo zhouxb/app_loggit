@@ -4,20 +4,15 @@ import datetime
 from django.core.cache import cache
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from annoying.decorators import render_to
+from annoying.decorators import ajax_request
 from loggit.models.newdomain import Minutely, Filter
 from loggit.conf import settings
 
+@ajax_request
 def create(request):
-    #print dir(request)
-    #print request.path
-    #print request.get_full_path()
-    #print request
+    rule = request.GET.get('rule', None)
+    if rule:
+        Filter.objects.get_or_create(rule='*.%s' % rule)
 
-    #rule = request.POST.get('rule', None)
-    #if rule:
-        #filter = Filter(rule=rule)
-        #filter.save()
-
-    return {}
+    return {'result':'success'}
 

@@ -22,7 +22,8 @@
   %table.table.table-striped
     %thead
       %tr
-        %th{'width':10} #
+        %th{'width':10}
+          {% trans 'count' %}
         %th {% trans 'domain' %}
         %th {% trans 'operate' %}
     %tbody
@@ -37,6 +38,21 @@
             - else
               = domain.domain
           %td
-              %a{'href':'{% url "loggit_newdomain_filter_create" %}'}
-                %i.icon-edit
+            %a{'id':'{{ forloop.counter }}', 'href':'#', 'onclick':'filter_create("{% url "loggit_newdomain_filter_create" %}", "{{ domain.domain }}", "{{ forloop.counter }}")'}
+              %i.icon-filter
+
+  - compress js
+    %script{'type':'text/coffeescript'}
+
+      @filter_create = (url, key, id) ->
+        bootbox.confirm '{% trans "Are you sure add filter?" %}', (confirmed) ->
+          if confirmed
+            callback = (response) ->
+              if response['result'] == 'success'
+                $('a#'+id).parent().parent().fadeOut 1000, () ->
+                  $('a#'+id).parent().parent().remove()
+              else
+                console.log response
+
+            $.get url, {'rule':key}, callback, 'json'
 
