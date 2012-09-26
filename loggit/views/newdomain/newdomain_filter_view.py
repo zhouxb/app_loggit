@@ -2,6 +2,7 @@
 
 from annoying.decorators import render_to, ajax_request
 from loggit.models.newdomain import Filter
+from loggit.helpers.filter_helper import rule_update
 
 @render_to('loggit/newdomain/filter/index.haml')
 def index(request):
@@ -13,7 +14,14 @@ def index(request):
 def create(request):
     rule = request.GET.get('rule', None)
     if rule:
-        Filter.objects.get_or_create(rule='*.%s' % rule)
+        rule = '*.%s' % rule
+        old_rules = Filter.objects.values_list('rule')
+        add_rules, del_rules = rule_update(old_rules, rule)
+
+        for r in add_rules:
+            Filter.objects.get_or_create(rule=r)
+        for r in del_rules:
+            Filter.objects(rule=r).delete()
 
     return {'result':'success'}
 

@@ -6,6 +6,12 @@
 - load loggit_filter
 
 - block main
+  %div{'style':'bottom:1px; position:fixed; right:10px;'}
+    %p
+      %a.btn.btn-mini.btn-info{'href':'{% url "loggit_newdomain_filter_index" %}?day={{ day }}'}
+        %i.icon-filter.icon-white
+        {% trans 'filter' %}
+
   %legend {% trans 'analysis'%}
     %a{'href':'{% url "loggit_newdomain_show" %}?starttime={{ day }}&endtime={{ day }}'}
       = day
