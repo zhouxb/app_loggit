@@ -14,7 +14,28 @@
     %li
       %a{'href':"{% url 'loggit_newdomain_index' %}"}
         {% trans 'newdomain' %}
-    -#%li
-      -#%a{'href':"{% url 'tasking_task_index' %}"}
-        -#{% trans 'cname' %}
+
+    %li.nav-header
+      {% trans 'top100' %}
+    %li
+      %a{'href':"{% url 'loggit_domain_index' %}"}
+        {% trans 'top100 total' %}
+
+    %li.nav-header
+      {% trans 'import ip' %}
+    %li
+      %a{'href':"{% url 'loggit_ip_index' %}"} 
+        {% trans 'import ip' %}
+
+    %li.nav-header
+      {% trans 'leadingin domain' %}
+    %li
+      %a{'href':"{% url 'loggit_leadingin_index' %}"} 
+        {% trans 'leadingin domain' %}
+
+    %li.nav-header
+      {% trans 'no speed' %}
+    %li
+      %a{'href':"{% url 'loggit_non80_index' %}"} 
+        {% trans 'no speed' %}
 
