@@ -1,12 +1,13 @@
 # -*- coding:utf8 -*-
 
-import datetime
-from django.core.cache import cache
-from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
-from annoying.decorators import ajax_request
-from loggit.models.newdomain import Minutely, Filter
-from loggit.conf import settings
+from annoying.decorators import render_to, ajax_request
+from loggit.models.newdomain import Filter
+
+@render_to('loggit/newdomain/filter/index.haml')
+def index(request):
+    day = request.GET.get('day', None)
+    filters = Filter.objects()
+    return {'filters':filters, 'day':day}
 
 @ajax_request
 def create(request):
@@ -14,5 +15,11 @@ def create(request):
     if rule:
         Filter.objects.get_or_create(rule='*.%s' % rule)
 
+    return {'result':'success'}
+
+@ajax_request
+def delete(request):
+    id = request.GET.get('id', None)
+    Filter.objects(id=id).delete()
     return {'result':'success'}
 

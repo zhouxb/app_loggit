@@ -14,17 +14,22 @@
         %span#count.badge.badge-success 0
 
     %form.form-inline{'method':'GET', 'action':"{% url 'loggit_newdomain_show' %}"}
-      %legend {% trans 'today'%}
-        = day
+      %legend {% trans 'newdomain'%}
+        -#= day
       %input.input-medium.starttime{'type':'text', 'name':'starttime', 'value':'={starttime}'}
       To
       %input.input-medium.endtime{'type':'text', 'name':'endtime', 'value':'={endtime}'}
       %button.btn{'type':'submit'}
         %i.icon-search
         {% trans 'search' %}
-      %a.btn{'href':'{% url "loggit_newdomain_analysis_index" %}?day={{ starttime }}'}
-        %i.icon-search
-        {% trans 'search' %}
+
+      %a.btn.btn-success{'href':'{% url "loggit_newdomain_analysis_index" %}?day={{ starttime }}'}
+        %i.icon-th.icon-white
+        {% trans 'analysis' %}
+
+      %a.btn.btn-info{'href':'{% url "loggit_newdomain_filter_index" %}?day={{ starttime }}'}
+        %i.icon-filter.icon-white
+        {% trans 'filter' %}
 
     #table
       %table.table.table-striped

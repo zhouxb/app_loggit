@@ -20,5 +20,7 @@ urlpatterns += patterns('loggit.views.newdomain.newdomain_analysis_view',
 )
 
 urlpatterns += patterns('loggit.views.newdomain.newdomain_filter_view',
+    url(r'^newdomain/filter/index$', 'index', name='loggit_newdomain_filter_index'),
     url(r'^newdomain/filter/create$', 'create', name='loggit_newdomain_filter_create'),
+    url(r'^newdomain/filter/delete$', 'delete', name='loggit_newdomain_filter_delete'),
 )

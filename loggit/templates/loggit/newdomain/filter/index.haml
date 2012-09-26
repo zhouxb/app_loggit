@@ -1,0 +1,44 @@
+- extends 'loggit/body.haml'
+
+- load url from future
+- load i18n
+- load compress
+- load loggit_filter
+
+- block main
+  %legend {% trans 'filter' %}
+    %a{'href':'{% url "loggit_newdomain_show" %}?starttime={{ day }}&endtime={{ day }}'}
+      = day
+
+  %table.table.table-striped
+    %thead
+      %tr
+        %th {% trans 'rule' %}
+        %th {% trans 'date' %}
+        %th {% trans 'operate' %}
+    %tbody
+      - for f in filters
+        %tr
+          %td
+            = f.rule
+          %td
+            = f.date|date:'Y-m-d'
+          %td
+            %a{'id':'{{ forloop.counter }}', 'href':'#', 'onclick':'remove("{% url "loggit_newdomain_filter_delete" %}", "{{ f.id }}", "{{ forloop.counter }}")'}
+              %i.icon-trash
+
+  - compress js
+    %script{'type':'text/coffeescript'}
+
+      @remove = (url, objectId, id) ->
+        bootbox.confirm '{% trans "Are you sure delete?" %}', (confirmed) ->
+          if confirmed
+            callback = (response) ->
+              if response['result'] == 'success'
+                $('a#' + id).parent().parent().fadeOut 1000, () ->
+                  $('a#' + id).parent().parent().remove()
+              else
+                console.log response
+            $.get url, {'id':objectId}, callback, 'json'
+
+
