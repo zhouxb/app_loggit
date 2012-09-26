@@ -6,6 +6,7 @@ from collections import defaultdict
 from django.core.cache import cache
 from mongoengine import *
 from mongoengine.connection import get_connection, get_db, _dbs
+from mongoengine.queryset import Q
 from loggit.conf import settings
 
 if settings.LOGGIT_PRODUCT:
@@ -23,6 +24,17 @@ class Minutely(Document):
             'db_alias':'newdomain',
             'allow_inheritance':False,
             }
+
+    @classmethod
+    def by_day_count(cls, day):
+        rules = list(Filter.objects.values_list('rule'))
+        if rules:
+            rules = '|'.join(map(lambda x:'.%s' % x, rules))
+            count = Minutely.objects(Q(date__startswith=day) & Q(domain__not__regex=rules)).count()
+        else:
+            count = Minutely.objects(Q(date__startswith=day)).count()
+
+        return count
 
     @classmethod
     def by_day(cls, starttime, endtime):

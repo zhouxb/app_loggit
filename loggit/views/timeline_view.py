@@ -15,6 +15,8 @@ def index(request):
 
 @ajax_request
 def show(request):
+    from mongoengine.queryset import Q
+    import re
 
     timeline = {"type":"default"}
     date = []
@@ -22,7 +24,7 @@ def show(request):
     k = 'timeline'
     if cache.get(k) is None:
         for day in day_on_num(datetime.date.today(), 30):
-            count = Minutely.objects(date__startswith=day).count()
+            count = Minutely.by_day_count(day)
 
             year = day[:4]
             month = day[4:6]

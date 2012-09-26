@@ -11,9 +11,10 @@ class LoggitAppConf(AppConf):
     MONGODB_PASSWORD = 'chinacache_is_really_hot'
 
     #PRODUCT = False
-    #MONGODB_HOST = '127.0.0.1'
+    #MONGODB_HOST = '192.168.10.93'
     #MONGODB_PORT = 27017
-    TEST_DB = 'loggit'
+    ##TEST_DB = 'loggit'
+    #TEST_DB = 'newdomain'
 
     TIMEOUT = 60*10
 
