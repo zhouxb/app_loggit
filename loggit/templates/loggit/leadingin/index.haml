@@ -1,0 +1,61 @@
+- extends 'loggit/body.haml'
+
+- load url from future
+- load i18n
+- load compress
+
+- block main
+
+  - block mheader
+    .loading
+    .here{'style':'bottom:1px; position:fixed; right:10px;'}
+      %p
+        %span#total.badge.badge-info 0
+        %span#count.badge.badge-success 0
+
+    %form.form-inline{'method':'post', 'action':""}
+
+      {% csrf_token %}
+      %legend {% trans 'today'%}
+        = day
+      %input.input-medium.starttime{'type':'text', 'name':'starttime', 'value':'={starttime}'}
+      To
+      %input.input-medium.endtime{'type':'text', 'name':'endtime', 'value':'={endtime}'}
+      
+      %input.btn{'type':'submit' ,'value':"{% trans 'search' %}"}
+
+    #table
+      %table.table.table-striped
+        %thead
+          %tr
+            %th{'width':10} #
+            %th {% trans 'domain' %}
+            %th {% trans 'isp' %}
+            %th {% trans 'province' %}
+            %th {% trans 'date' %}
+        %tbody
+
+  - block mcs
+    - compress js
+      %script{'type':'text/coffeescript', 'src':'={ STATIC_URL }cs/newdomain.coffee'}
+
+    - compress js
+      %script{'type':'text/coffeescript'}
+        $ ->
+          $('.starttime').datepicker({format:'yyyy-mm-dd'})
+          $('.endtime').datepicker({format:'yyyy-mm-dd'})
+
+          window.loading = $('.loading').spin()
+
+          table_e = $('.table > tbody:last')
+          total_e = $('#total')
+          count_e = $('#count')
+
+          newdomain = new Leadingin '{% url "loggit_api_leadingin_index" %}', '{{ starttime }}', '{{ endtime }}'
+          newdomain.load_data(window.loading, table_e, total_e, count_e)
+
+          $(window).scroll () ->
+            if $(window).scrollTop() == $(document).height() - $(window).height() and window.total != window.count
+              window.loading.show()
+              newdomain.load_data(window.loading, table_e, total_e, count_e)
+
