@@ -2,7 +2,10 @@
 
 import datetime
 from django.core.cache import cache
+<<<<<<< HEAD
 from django.core.urlresolvers import reverse
+=======
+>>>>>>> 237dcffe727e2913b7ed1422f74208202fd337d6
 from annoying.decorators import render_to
 from loggit.models.newdomain import Minutely
 from loggit.conf import settings
@@ -26,5 +29,9 @@ def index(request):
         n = len(key.split('.')) + 1
     domains = Minutely.analysis(domains, n, key)
 
+<<<<<<< HEAD
     return {'domains':domains, 'total':total, 'day':day, 'key':key}
+=======
+    return {'domains':domains, 'total':total, 'day':day}
+>>>>>>> 237dcffe727e2913b7ed1422f74208202fd337d6
 
