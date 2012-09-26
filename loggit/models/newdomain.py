@@ -1,7 +1,9 @@
 # -*- coding:utf8 -*-
 
+import re
 import datetime
 from collections import defaultdict
+from django.core.cache import cache
 from mongoengine import *
 from mongoengine.connection import get_connection, get_db, _dbs
 from loggit.conf import settings
@@ -21,6 +23,36 @@ class Minutely(Document):
             'db_alias':'newdomain',
             'allow_inheritance':False,
             }
+
+    @classmethod
+    def by_day(cls, starttime, endtime):
+        starttime = starttime.replace('-', '')
+        endtime = endtime.replace('-', '')
+
+        if starttime == endtime:
+            cache_key = 'newdomain%s' % starttime
+            if cache.get(cache_key) is None:
+                domains = list(cls.objects(date__startswith=starttime).values_list('domain', ))
+                cache.set(cache_key, domains, 60)
+        else:
+            cache_key = 'newdomain%s_%s' % (starttime, endtime)
+            if cache.get(cache_key) is None:
+                if starttime is None:
+                    domains = list(cls.objects(date__lte=endtime).values_list('domain', ))
+                elif endtime is None:
+                    domains = list(cls.objects(date__gte=starttime).values_list('domain', ))
+                else:
+                    domains = list(cls.objects(date__gte=starttime, date__lte=endtime).values_list('domain', ))
+                cache.set(cache_key, domains, settings.LOGGIT_TIMEOUT)
+
+        domains = cache.get(cache_key)
+
+        rules = list(Filter.objects.values_list('rule'))
+        if rules:
+            rules = '|'.join(map(lambda x:'.%s' % x, rules))
+            domains = filter(lambda x:not re.match(rules, x), domains)
+
+        return domains
 
     @classmethod
     def analysis(cls, domains, n=2, key=None):
