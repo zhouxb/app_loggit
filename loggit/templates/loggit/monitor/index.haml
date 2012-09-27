@@ -7,13 +7,12 @@
 - block main
 
   - block mheader
+    %script{'src':'={ STATIC_URL }highcharts.js'}
     .loading
     .here{'style':'bottom:1px; position:fixed; right:10px;'}
       %p
         %span#total.badge.badge-info 0
         %span#count.badge.badge-success 0
-
-   
     %p
       %a{'href':"{% url 'loggit_domain_namelist_index' %}?namelist=B"}
         %span#blist.badge.badge-inverse{'style':'position:fixed; right:10px; top:120px; width:30px;'} black
@@ -30,53 +29,25 @@
       %a{'href':"{% url 'loggit_domain_namelistpercent_index' %}?namelist=G"}
         %span#count.badge{'style':'position:fixed; right:10px; top:300px;width:75px;'} grap percent
       %a{'href':"{% url 'loggit_domain_namelistpercent_index' %}?namelist=-"}
-        %span#count.badge.badge-success{'style':'position:fixed; right:10px; top:325px;width:75px;'} blank percent  
- 
-    %form.form-inline{'method':'post', 'action':""}
+        %span#count.badge.badge-success{'style':'position:fixed; right:10px; top:325px;width:75px;'} blank percent
 
-      {% csrf_token %}
-      %legend {% trans 'today'%}
-        = day
-      %input.input-medium.starttime{'type':'text', 'name':'starttime', 'value':'={starttime}'}
-      To
-      %input.input-medium.endtime{'type':'text', 'name':'endtime', 'value':'={endtime}'}
+    %legend {% trans 'alarm'%}
       
-      %input.btn{'type':'submit' ,'value':"{% trans 'search' %}"}
-
-    #table
-      %table.table.table-striped
-        %thead
-          %tr
-            %th{'width':10} #
-            %th {% trans 'domain' %}
-            %th {% trans 'count' %}
-            %th {% trans 'isp' %}
-            %th {% trans 'province' %}
-            %th {% trans 'namelist' %}
-            %th {% trans 'date' %}
-        %tbody
-
-  - block mcs
-    - compress js
-      %script{'type':'text/coffeescript', 'src':'={ STATIC_URL }cs/newdomain.coffee'}
-
+    %input.input-medium.starttime{'type':'text', 'id':'starttime', 'name':'starttime', 'value':'={starttime}'}
+    To
+    %input.input-medium.endtime{'type':'text', 'id':'endtime','name':'endtime', 'value':'={endtime}'}
+      
+    %input.btn{'type':'button' ,'value':"{% trans 'search' %}", 'onclick':'reload_height_chart();'}
+    .tab-pane{'style':'min-height:400px;width:80%;'}
+      #alarm_content
     - compress js
       %script{'type':'text/coffeescript'}
         $ ->
           $('.starttime').datepicker({format:'yyyy-mm-dd'})
           $('.endtime').datepicker({format:'yyyy-mm-dd'})
+  - block mcs
+    
 
-          window.loading = $('.loading').spin()
-
-          table_e = $('.table > tbody:last')
-          total_e = $('#total')
-          count_e = $('#count')
-
-          newdomain = new Domain '{% url "loggit_api_domain_index" %}', '{{ starttime }}', '{{ endtime }}'
-          newdomain.load_data(window.loading, table_e, total_e, count_e)
-
-          $(window).scroll () ->
-            if $(window).scrollTop() == $(document).height() - $(window).height() and window.total != window.count
-              window.loading.show()
-              newdomain.load_data(window.loading, table_e, total_e, count_e)
+    
+          
 

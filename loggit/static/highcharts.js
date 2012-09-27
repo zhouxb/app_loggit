@@ -3,7 +3,6 @@ function chart(id,success_data,failure_data,total_data){
         var chart = new Highcharts.Chart({
             chart: {
                 renderTo: id,
-                width:800,
                 type: 'spline',
                 marginRight: 10
                 /*events: {
@@ -83,7 +82,7 @@ function chart(id,success_data,failure_data,total_data){
     function reload_height_chart(){
         starttime = $('#starttime').val()
         endtime = $('#endtime').val()
-        $.getJSON('/loggit/api/domain/alarm?starttime='+starttime+'&endtime='+endtime, function(data) {
+        $.getJSON('/loggit/api/monitor/index?starttime='+starttime+'&endtime='+endtime, function(data) {
                         
             chart('alarm_content',data['success_data'],data['failure_data'],data['total_data'])
         });

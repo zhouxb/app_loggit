@@ -40,14 +40,5 @@ def namelistpercent(request):
 
 	return {'day':today, 'starttime':starttime, 'endtime':endtime,'namelist':namelist}
 
-@render_to('loggit/domain/alarm.haml')
-def alarm(request):
-	today = datetime.date.today().strftime('%Y-%m-%d')
-	starttime = request.REQUEST.get('starttime', None)
-	endtime = request.REQUEST.get('endtime', None)
 
-	starttime = starttime or today
-	endtime = endtime or today
-
-	return {'day':today, 'starttime':starttime, 'endtime':endtime}
 

@@ -29,14 +29,12 @@ urlpatterns += patterns('loggit.views.api.domain_view',
     url(r'^api/domain/index$', 'index', name='loggit_api_domain_index'),
     url(r'^api/domain/name_list$', 'name_list', name='loggit_api_domain_name_list'),
     url(r'^api/domain/name_list_percent$', 'name_list_percent', name='loggit_api_domain_name_list_percent'),
-    url(r'^api/domain/alarm$', 'alarm', name='loggit_api_domain_alarm'),
 )
 
 urlpatterns += patterns('loggit.views.domain.domain_view',
     url(r'^domain/index$', 'index', name='loggit_domain_index'),
     url(r'^domain_namelist/index$', 'namelist', name='loggit_domain_namelist_index'),
     url(r'^domain_namelistpercent/index$', 'namelistpercent', name='loggit_domain_namelistpercent_index'),
-    url(r'^domain/alarm$', 'alarm', name='loggit_domain_alarm'),
 )
 
 urlpatterns += patterns('loggit.views.api.ip_view',
@@ -61,4 +59,11 @@ urlpatterns += patterns('loggit.views.api.non80_view',
 
 urlpatterns += patterns('loggit.views.non80.non80_view',
     url(r'^non80/index$', 'index', name='loggit_non80_index'),
+)
+urlpatterns += patterns('loggit.views.api.monitor_view',
+    url(r'^api/monitor/index$', 'index', name='loggit_api_monitor_index'),
+)
+
+urlpatterns += patterns('loggit.views.monitor.monitor_view',
+    url(r'^monitor/index$', 'index', name='loggit_monitor_index'),
 )

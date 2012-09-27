@@ -37,5 +37,11 @@
       {% trans 'no speed' %}
     %li
       %a{'href':"{% url 'loggit_non80_index' %}"} 
-        {% trans 'no speed' %}
+        {% trans 'no speed' %}  
+
+    %li.nav-header
+      {% trans 'monitor' %}
+    %li
+      %a{'href':"{% url 'loggit_monitor_index' %}"} 
+        {% trans 'monitor' %}
 

@@ -29,8 +29,6 @@
         %span#count.badge{'style':'position:fixed; right:10px; top:300px;width:75px;'} grap percent
       %a{'href':"{% url 'loggit_domain_namelistpercent_index' %}?namelist=-"}
         %span#count.badge.badge-success{'style':'position:fixed; right:10px; top:325px;width:75px;'} blank percent
-      %a{'href':"{% url 'loggit_domain_alarm' %}"}
-        %span#count.badge.badge-important{'style':'position:fixed; right:10px; top:370px;width:30px;'} alarm
         
     %form.form-inline{'method':'post', 'action':""}
       {% csrf_token %}
