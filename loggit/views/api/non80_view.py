@@ -21,19 +21,19 @@ def index(request):
     if start and end :
         if start >= end :
             end = datetime.datetime.strptime(end,'%Y-%m-%d').strftime('%Y%m%d')
-            if cache.get(end+'non80') is None:
+            if cache.get(end+'non80'+str(page)) is None:
                 domains = list(Minutely.objects(date__startswith=end).order_by('-count').values_list('domain', 'count','isp','province','date',)[num*page:num*(1+page)])
-                cache.set(end+'non80', domains, timeout)
+                cache.set(end+'non80'+str(page), domains, timeout)
             else:
-                domains = cache.get(end+'non80')
+                domains = cache.get(end+'non80'+str(page))
             total = Minutely.objects(date__startswith=end).count()
         else :
             start = datetime.datetime.strptime(start,'%Y-%m-%d').strftime('%Y%m%d0000')
             end = datetime.datetime.strptime(end,'%Y-%m-%d').strftime('%Y%m%d0000')
-            if cache.get(start+end+'non80') is None:
+            if cache.get(start+end+'non80'+str(page)) is None:
                 domains = list(Minutely.objects(date__gte=start, date__lte=end).order_by('-count').values_list('domain', 'count','isp','province','date',)[num*page:num*(1+page)])
-                cache.set(start+end+'non80', domains, timeout)
+                cache.set(start+end+'non80'+str(page), domains, timeout)
             else:
-                domains = cache.get(start+end+'non80')
+                domains = cache.get(start+end+'non80'+str(page))
             total = Minutely.objects(date__gte=start, date__lte=end).count()
     return {'domains':domains, 'total':total}
